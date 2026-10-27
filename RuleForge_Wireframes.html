@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RuleForge Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Theme: black + Deloitte green, as used by HashedIn by Deloitte. Check exact hex values against the official brand guide. */
+  :root {
+    --ink: #0d0d0d;
+    --ink-2: #1f2326;
+    --bg: #f4f5f2;
+    --surface: #ffffff;
+    --surface-2: #f7f8f6;
+    --border: #dde1e4;
+    --text: #1a1a1a;
+    --muted: #53565a;
+    --green: #86bc25;
+    --green-dark: #046a38;
+    --green-tint: #f1f8e6;
+    --teal: #007680;
+    --teal-tint: #e6f4f5;
+    --amber: #a34a00;
+    --amber-tint: #fff3dc;
+    --red: #b42318;
+    --red-tint: #fee4e2;
+    --radius: 12px;
+    --shadow: 0 1px 2px rgba(13,13,13,.06), 0 4px 16px -6px rgba(13,13,13,.12);
+    --font: "Open Sans", system-ui, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  button { font-family: inherit; }
+  a { color: var(--green-dark); }
+
+  /* ── Top bar ── */
+  .topbar { background: var(--ink); color: #fff; padding: 14px 28px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .brand { font-weight: 800; font-size: 20px; letter-spacing: -.01em; display: flex; align-items: baseline; gap: 2px; }
+  .brand .dot { width: 9px; height: 9px; background: var(--green); border-radius: 50%; display: inline-block; }
+  .brand-sub { color: #c9cdd1; font-size: 13px; }
+  .topbar .spacer { flex: 1; }
+  .scope-pill { font-size: 12px; font-weight: 600; color: var(--ink); background: var(--green); padding: 4px 12px; border-radius: 999px; }
+
+  /* ── Journey stepper (the only navigation) ── */
+  .journey { background: var(--ink-2); padding: 0 28px; display: flex; gap: 4px; overflow-x: auto; }
+  .step-tab { background: none; border: none; color: #c9cdd1; padding: 14px 18px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; font-size: 14px; font-weight: 600; min-height: 48px; }
+  .step-tab .num { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #6b7075; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+  .step-tab small { display: block; font-weight: 400; font-size: 11.5px; color: #9aa0a6; }
+  .step-tab:hover { color: #fff; }
+  .step-tab.active { color: #fff; border-bottom-color: var(--green); }
+  .step-tab.active .num { background: var(--green); border-color: var(--green); color: var(--ink); }
+  .step-tab.done .num { border-color: var(--green); color: var(--green); }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 28px; }
+  .screen { display: none; animation: fade .25s ease; }
+  .screen.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .screen-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .eyebrow { font-size: 12px; font-weight: 700; color: var(--green-dark); text-transform: uppercase; letter-spacing: .08em; }
+  h1 { font-size: 26px; font-weight: 800; letter-spacing: -.01em; margin-top: 4px; }
+  h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .note { font-size: 12px; color: var(--muted); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .stat .v { font-size: 32px; font-weight: 800; line-height: 1.1; }
+  .stat .l { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .stat.accent { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .stat.accent .v { color: var(--green); }
+  .stat.accent .l { color: #c9cdd1; }
+
+  .badge { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .b-green { background: var(--green-tint); color: var(--green-dark); }
+  .b-teal { background: var(--teal-tint); color: var(--teal); }
+  .b-amber { background: var(--amber-tint); color: var(--amber); }
+  .b-red { background: var(--red-tint); color: var(--red); }
+  .b-gray { background: #eceef0; color: #3d4246; }
+  .b-ink { background: var(--ink); color: #fff; }
+
+  .btn { border: 1px solid var(--border); background: var(--surface); color: var(--text); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; transition: all .15s ease; }
+  .btn:hover { border-color: var(--muted); }
+  .btn.primary { background: var(--green); border-color: var(--green); color: var(--ink); }
+  .btn.primary:hover { background: #79ab1f; }
+  .btn.dark { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .btn.danger { color: var(--red); border-color: #f4b8b2; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .chip { border: 1px solid var(--border); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-weight: 600; font-size: 13px; cursor: pointer; min-height: 40px; }
+  .chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  /* ── Screen 1: inbox ── */
+  .inbox { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; margin-top: 20px; align-items: start; }
+  .item { width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; margin-bottom: 8px; font-size: 14px; color: var(--text); }
+  .item:hover { border-color: var(--muted); }
+  .item.selected { border-color: var(--green-dark); box-shadow: 0 0 0 3px var(--green-tint); }
+  .item .date { font-family: var(--mono); font-size: 12px; color: var(--muted); min-width: 64px; padding-top: 2px; }
+  .item .title { font-weight: 600; line-height: 1.4; }
+  .item .meta { margin-top: 6px; }
+  .detail h3 { font-size: 16px; font-weight: 700; line-height: 1.4; margin: 8px 0 12px; }
+  .kv { display: grid; grid-template-columns: 130px 1fr; gap: 8px 12px; font-size: 13px; margin-bottom: 16px; }
+  .kv dt { color: var(--muted); font-weight: 600; }
+  .kv dd { min-width: 0; overflow-wrap: anywhere; }
+
+  /* ── Screen 2: agent workbench ── */
+  .rail { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; margin: 20px 0; position: relative; }
+  .agent { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px 6px 12px; position: relative; color: var(--text); border-radius: 10px; }
+  .agent::after { content: ""; position: absolute; top: 30px; left: calc(50% + 26px); right: calc(-50% + 26px); height: 2px; background: var(--border); }
+  .agent:last-child::after { display: none; }
+  .agent.ran::after { background: var(--green); }
+  .agent .node { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: all .2s ease; }
+  .agent .node svg { width: 22px; height: 22px; stroke: var(--muted); }
+  .agent.ran .node { border-color: var(--green); background: var(--green-tint); }
+  .agent.ran .node svg { stroke: var(--green-dark); }
+  .agent.flag .node { border-color: var(--amber); background: var(--amber-tint); }
+  .agent.flag .node svg { stroke: var(--amber); }
+  .agent.running .node { border-color: var(--teal); box-shadow: 0 0 0 6px var(--teal-tint); }
+  .agent.selected .node { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .agent .name { font-weight: 700; font-size: 13.5px; text-align: center; }
+  .agent .kind { font-size: 11px; }
+  .agent:hover .name { text-decoration: underline; }
+
+  .work { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .panel-head h2 { margin: 0; }
+  pre.code { background: var(--ink); color: #e8eaed; border-radius: 8px; padding: 16px; font-family: var(--mono); font-size: 12.5px; line-height: 1.65; white-space: pre-wrap; overflow-x: auto; }
+  pre.code .k { color: var(--green); }
+  .quote { border-left: 0; background: var(--surface-2); border-radius: 8px; padding: 14px; font-size: 13.5px; margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px; border-bottom: 1px solid #eef0f2; vertical-align: top; }
+  .ok { color: var(--green-dark); font-weight: 700; }
+  .flagbox { background: var(--amber-tint); border-radius: 8px; padding: 14px; font-size: 13.5px; margin-top: 12px; }
+  .flagbox strong { color: var(--amber); }
+  .summary li { list-style: none; display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #eef0f2; font-size: 13.5px; }
+  .summary li:last-child { border-bottom: none; }
+  .tick { width: 20px; height: 20px; border-radius: 50%; background: var(--green-tint); color: var(--green-dark); font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tick.warn { background: var(--amber-tint); color: var(--amber); }
+  fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-top: 14px; }
+  legend { font-size: 13px; font-weight: 700; padding: 0 6px; }
+  label.radio { display: flex; align-items: center; gap: 8px; min-height: 36px; font-size: 13.5px; cursor: pointer; }
+  textarea { width: 100%; margin-top: 6px; font: inherit; font-size: 13.5px; border: 1px solid var(--border); border-radius: 8px; padding: 10px; resize: vertical; }
+  .decision-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .result { margin-top: 14px; border-radius: 8px; padding: 14px; font-size: 13.5px; display: none; }
+  .result.show { display: block; }
+  .result.good { background: var(--green-tint); color: var(--green-dark); }
+  .result.bad { background: var(--red-tint); color: var(--red); }
+
+  /* ── Screen 3: finding ── */
+  .finding { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .prov { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .prov h2 { color: #fff; }
+  .timeline { list-style: none; position: relative; margin-top: 8px; }
+  .timeline::before { content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: #3a3f44; }
+  .timeline li { display: flex; gap: 14px; padding: 8px 0; position: relative; }
+  .timeline .d { width: 24px; height: 24px; border-radius: 50%; background: var(--green); color: var(--ink); font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+  .timeline .d.human { background: #fff; }
+  .timeline b { display: block; font-size: 13.5px; }
+  .timeline span { font-size: 12.5px; color: #c9cdd1; }
+  .tabs-inline { display: flex; gap: 8px; margin-bottom: 10px; }
+
+  /* ── Screen 4: monitor ── */
+  .switch { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 6px 6px 6px 16px; font-weight: 600; font-size: 13.5px; }
+  .toggle { border: none; border-radius: 999px; padding: 8px 16px; font-weight: 700; cursor: pointer; min-height: 40px; }
+  .toggle.on { background: var(--green); color: var(--ink); }
+  .toggle.off { background: var(--red); color: #fff; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; margin-top: 20px; }
+  .flow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .flow > div { flex: 1 1 150px; border: 1px solid var(--border); border-radius: 10px; padding: 12px; background: var(--surface-2); }
+  .flow b { display: block; font-size: 14px; }
+  .flow span { font-size: 12.5px; color: var(--muted); }
+  .ph { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  .footer-nav { display: flex; justify-content: space-between; margin-top: 28px; gap: 12px; }
+
+  .toast-wrap { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .toast { background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 13px; box-shadow: var(--shadow); border-left: 0; }
+  .toast::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 10px; }
+
+  @media (max-width: 960px) {
+    .inbox, .work, .finding, .two { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rail { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 12px; }
+    .agent::after { display: none; }
+  }
+  @media (max-width: 560px) {
+    main { padding: 16px; }
+    .topbar, .journey { padding-left: 16px; padding-right: 16px; }
+    .rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">RuleForge<span class="dot" aria-hidden="true"></span></div>
+  <div class="brand-sub">Agentic rule generation for CloudGuard Labs · Case 14</div>
+  <div class="spacer"></div>
+  <span class="scope-pill">MVP · AWS only · 100% SME sign-off</span>
+</header>
+
+<nav class="journey" aria-label="Rule journey">
+  <button class="step-tab active" data-go="0"><span class="num">1</span><span>Detect<small>Watcher inbox</small></span></button>
+  <button class="step-tab" data-go="1"><span class="num">2</span><span>Draft &amp; verify<small>Agent workbench</small></span></button>
+  <button class="step-tab" data-go="2"><span class="num">3</span><span>Publish<small>Customer finding</small></span></button>
+  <button class="step-tab" data-go="3"><span class="num">4</span><span>Monitor<small>Evals &amp; health</small></span></button>
+</nav>
+
+<main>
+
+  <!-- ═══ 1 · DETECT ═══ -->
+  <section class="screen active" data-screen="0" aria-label="Detect">
+    <div class="screen-head">
+      <div>
+        <div class="eyebrow">Step 1 · Watcher agent</div>
+        <h1>What changed in the cloud, and does it need a rule?</h1>
+      </div>
+      <div class="note">Sources: AWS What's New · botocore model diffs · CIS Benchmark releases · Window 14–26 Oct 2026</div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card stat"><div class="v">100</div><div class="l">AWS announcements ingested</div></div>
+      <div class="card stat accent"><div class="v">11</div><div class="l">need a new or updated rule</div></div>
+      <div class="card stat"><div class="v">89</div><div class="l">auto-closed as noise</div></div>
+      <div class="card stat"><div class="v">31</div><div class="l">CIS v6.0 → v7.0 changes to absorb</div></div>
+    </div>
+
+    <div class="inbox">
+      <div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" role="group" aria-label="Filter">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="need">Needs rule</button>
+          <button class="chip" data-filter="noise">Filtered out</button>
+        </div>
+        <div id="items"></div>
+      </div>
+      <aside class="card detail" id="item-detail" aria-live="polite"></aside>
+    </div>
+    <p class="note" style="margin-top:12px">Items are real AWS What's New titles and CIS v7.0 recommendations from the Golden Data Set. Triage labels are drafts pending SME review.</p>
+  </section>
+
+  <!-- ═══ 2 · DRAFT & VERIFY ═══ -->
+  <section class="screen" data-screen="1" aria-label="Draft and verify">
+    <div class="screen-head">
+      <div>
+        <div class="eyebrow">Step 2 · Five agents, one human decision</div>
+        <h1>S3 Block Public Access (CIS v7.0.0 · 3.1.4)</h1>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <span class="badge b-red">Severity high</span>
+          <span class="badge b-gray">Tier T2 · 1 SME sign-off</span>
+          <span class="badge b-gray">AwsS3Bucket</span>
+          <span class="badge b-teal">Golden set P-036 · P-037 · E-050</span>
+        </div>
+      </div>
+      <button class="btn dark" id="play">▶ Replay pipeline</button>
+    </div>
+
+    <div class="card">
+      <div class="rail" id="rail"></div>
+      <p class="note" style="text-align:center">Click any step to see what that agent produced. <span class="badge b-teal">LLM</span> reasons over text · <span class="badge b-green">Deterministic</span> code decides pass/fail · <span class="badge b-ink">Human</span> owns the decision</p>
+    </div>
+
+    <div class="work" style="margin-top:20px">
+      <div class="card" id="agent-panel" aria-live="polite"></div>
+      <div class="card">
+        <h2>Evidence pack</h2>
+        <ul class="summary" id="summary"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3 · PUBLISH ═══ -->
+  <section class="screen" data-screen="2" aria-label="Publish">
+    <div class="screen-head">
+      <div>
+        <div class="eyebrow">Step 3 · What the customer sees · CloudGuard console</div>
+        <h1>Block Public Access is not configured for the S3 Bucket [bucket-name].</h1>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <span class="badge b-red">High</span><span class="badge b-gray">FAIL</span><span class="badge b-gray">AWS account [account-id] · us-east-1</span>
+        </div>
+      </div>
+      <span class="badge b-amber" id="release-state">Rollout: shadow → canary → GA</span>
+    </div>
+
+    <div class="finding">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="card">
+          <h2>Why this matters</h2>
+          <p>Without S3 Block Public Access, public ACLs or broad bucket policies can grant internet or cross-account access.</p>
+          <ul style="margin:10px 0 0 20px;color:var(--muted)"><li>Data disclosure (confidentiality)</li><li>Object overwrite or uploads (integrity)</li><li>Deletion or outages from misuse (availability)</li></ul>
+        </div>
+        <div class="card">
+          <h2>How to fix</h2>
+          <div class="tabs-inline" role="group" aria-label="Fix format">
+            <button class="chip active" data-fix="cli">AWS CLI</button>
+            <button class="chip" data-fix="tf">Terraform</button>
+          </div>
+          <pre class="code" id="fix-code"></pre>
+        </div>
+        <div class="card">
+          <h2>Is this finding wrong?</h2>
+          <div class="decision-row" style="margin-top:0">
+            <button class="btn" id="report-fp">Report false positive</button>
+            <button class="btn">Accept risk (with expiry)</button>
+          </div>
+          <div class="result good" id="fp-result">Thanks. The rule goes back to the SME review queue with your report attached, and you'll be told the outcome.</div>
+        </div>
+      </div>
+
+      <aside class="card prov">
+        <h2>Rule provenance</h2>
+        <p style="font-size:12.5px;color:#c9cdd1">What an auditor needs to verify this finding</p>
+        <ol class="timeline">
+          <li><div class="d">W</div><div><b>Detected</b><span>CIS AWS Foundations v7.0.0 release · 3.1.4 · Level 1</span></div></li>
+          <li><div class="d">R</div><div><b>Researched</b><span>Cited: AWS S3 User Guide, Blocking public access</span></div></li>
+          <li><div class="d">A</div><div><b>Drafted</b><span>Rule s3_bucket_block_public_access · v[1.0]</span></div></li>
+          <li><div class="d">T</div><div><b>Validated</b><span>4 sandbox fixtures · expected = actual</span></div></li>
+          <li><div class="d">C</div><div><b>Critiqued</b><span>Account-level override handled</span></div></li>
+          <li><div class="d human">S</div><div><b>Approved</b><span>by [SME name] on [date] · shadow mode [start]–[end]</span></div></li>
+        </ol>
+        <button class="btn primary" style="margin-top:14px;width:100%;justify-content:center">Download audit evidence</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══ 4 · MONITOR ═══ -->
+  <section class="screen" data-screen="3" aria-label="Monitor">
+    <div class="screen-head">
+      <div>
+        <div class="eyebrow">Step 4 · Applied-AI pod</div>
+        <h1>Is the system still trustworthy?</h1>
+      </div>
+      <div class="switch">AI-drafted rules in production <button class="toggle on" id="kill" aria-pressed="true">ON · click to kill</button></div>
+    </div>
+
+    <div class="grid-4">
+      <div class="card stat"><div class="v">86</div><div class="l">Positive_Set · rule generation</div></div>
+      <div class="card stat"><div class="v">51</div><div class="l">Edge_Cases · known traps</div></div>
+      <div class="card stat"><div class="v">100</div><div class="l">Triage_Set · signal vs noise</div></div>
+      <div class="card stat"><div class="v">31</div><div class="l">Version_Drift · maintenance</div></div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <div class="panel-head"><h2>Release gate (runs on every model or prompt change)</h2><span class="badge b-amber">Proposed floors · recalibrated after week-3 backtest</span></div>
+        <table>
+          <thead><tr><th>Metric</th><th>Target</th><th>Latest</th></tr></thead>
+          <tbody>
+            <tr><td>Citation accuracy</td><td>100% (hard gate)</td><td class="ph">[measured]</td></tr>
+            <tr><td>Rule accuracy (all gates)</td><td>≥ 80%</td><td class="ph">[measured]</td></tr>
+            <tr><td>Severity accuracy</td><td>≥ 90%</td><td class="ph">[measured]</td></tr>
+            <tr><td>Triage recall (needs rule)</td><td>≥ 95%</td><td class="ph">[measured]</td></tr>
+            <tr><td>SME minutes per rule</td><td>≤ 120 (vs 3–5 SME-days)</td><td class="ph">[measured]</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h2>Per-agent health</h2>
+        <table>
+          <thead><tr><th>Agent</th><th>Type</th><th>p95 latency · errors · cost/run</th></tr></thead>
+          <tbody id="health"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h2>Promotion path · prompts, model version and rules are versioned together</h2>
+      <div class="flow">
+        <div><b>Dev</b><span>Sandbox AWS account · golden set must pass</span></div>
+        <div><b>Staging · shadow</b><span>Opted-in tenants, findings hidden</span></div>
+        <div><b>Prod · canary</b><span>Small tenant set, FP reports watched</span></div>
+        <div><b>Prod · GA</b><span>Feature-flagged, instant rollback</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-nav">
+    <button class="btn" id="prev">← Back</button>
+    <button class="btn primary" id="next">Next step →</button>
+  </div>
+</main>
+
+<div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Helpers ── */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function toast(msg) {
+    const t = el('div', 'toast', msg); $('#toasts').appendChild(t);
+    setTimeout(() => { t.style.transition = 'opacity .3s'; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2400);
+  }
+
+  /* ── Journey navigation (one linear flow) ── */
+  let current = 0;
+  const tabs = $$('.step-tab'), screens = $$('.screen');
+  function go(i) {
+    current = Math.max(0, Math.min(3, i));
+    screens.forEach((s, k) => s.classList.toggle('active', k === current));
+    tabs.forEach((t, k) => { t.classList.toggle('active', k === current); t.classList.toggle('done', k < current); });
+    $('#prev').disabled = current === 0;
+    $('#next').disabled = current === 3;
+    $('#next').textContent = ['Send to agents →', 'Publish finding →', 'Monitor →', 'Done'][current];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  tabs.forEach(t => t.addEventListener('click', () => go(+t.dataset.go)));
+  $('#prev').addEventListener('click', () => go(current - 1));
+  $('#next').addEventListener('click', () => go(current + 1));
+  go(0);
+
+  /* ── 1 · Detect: real items from the Golden Data Set ── */
+  const items = [
+    { date: 'Apr 2026', title: "CIS AWS Foundations v7.0.0 · 3.1.4 Ensure that S3 is configured with 'Block Public Access' enabled", label: 'Benchmark: draft rule', cls: 'b-green', need: true, ready: true,
+      why: 'Level 1, Automated recommendation. Reference checks exist: s3_bucket_level_public_access_block, s3_account_level_public_access_blocks.', source: 'CIS Benchmark release' },
+    { date: '26 Oct', title: 'AWS Key Management Service now supports ML-KEM for post-quantum key encapsulation', label: 'New rule candidate', cls: 'b-teal', need: true, why: 'New KMS key spec; possible key-spec policy rule.', source: 'AWS What’s New' },
+    { date: '26 Oct', title: 'AWS IAM Identity Center now supports cross-Region trusted identity propagation', label: 'New rule candidate', cls: 'b-teal', need: true, why: 'New identity-propagation setting; check trust scope configuration.', source: 'AWS What’s New' },
+    { date: '21 Oct', title: 'Amazon S3 server access log delivery to Amazon CloudWatch Logs now available in five additional AWS Regions', label: 'Update existing rule', cls: 'b-amber', need: true, why: 'Affects the CIS 4.4 logging rule (cloudtrail_logs_s3_bucket_access_logging_enabled).', source: 'AWS What’s New' },
+    { date: '20 Oct', title: 'Announcing Amazon ECS Gateway, a managed ingress solution for your ECS services', label: 'New rule candidate', cls: 'b-teal', need: true, why: 'New managed ingress = new internet-exposure surface.', source: 'AWS What’s New' },
+    { date: '16 Oct', title: 'Amazon EMR Serverless now supports IPv6 and dual-stack connectivity', label: 'New rule candidate', cls: 'b-teal', need: true, why: 'IPv6 path; the ::/0 exposure analogue of CIS 6.4.', source: 'AWS What’s New' },
+    { date: '23 Oct', title: 'Amazon EMR on EKS reduces EMR charge by 30 percent', label: 'No rule: pricing', cls: 'b-gray', need: false, why: 'Pricing change; no configuration surface.', source: 'AWS What’s New' },
+    { date: '16 Oct', title: 'Amazon MWAA now available in Mexico (Central) Region', label: 'No rule: region', cls: 'b-gray', need: false, why: 'Region availability only.', source: 'AWS What’s New' }
+  ];
+  let filter = 'all', selected = 0;
+  function renderItems() {
+    const box = $('#items'); box.textContent = '';
+    items.forEach((it, i) => {
+      if (filter === 'need' && !it.need) return;
+      if (filter === 'noise' && it.need) return;
+      const b = el('button', 'item' + (i === selected ? ' selected' : ''));
+      b.appendChild(el('span', 'date', it.date));
+      const body = el('span'); body.appendChild(el('span', 'title', it.title));
+      const meta = el('span', 'meta'); meta.style.display = 'block'; meta.appendChild(el('span', 'badge ' + it.cls, it.label));
+      body.appendChild(meta); b.appendChild(body);
+      b.addEventListener('click', () => { selected = i; renderItems(); renderDetail(); });
+      box.appendChild(b);
+    });
+  }
+  function renderDetail() {
+    const it = items[selected], d = $('#item-detail'); d.textContent = '';
+    d.appendChild(el('span', 'badge ' + it.cls, it.label));
+    d.appendChild(el('h3', null, it.title));
+    const kv = el('dl', 'kv');
+    [['Source', it.source], ['Date', it.date], ['Watcher reasoning', it.why], ['Customer footprint', '[from scan telemetry]']].forEach(([k, v]) => { kv.appendChild(el('dt', null, k)); kv.appendChild(el('dd', null, v)); });
+    d.appendChild(kv);
+    let btn;
+    if (it.ready) { btn = el('button', 'btn primary', 'Send to agents →'); btn.addEventListener('click', () => { go(1); replay(); }); }
+    else if (it.need) { btn = el('button', 'btn', 'Queued for drafting'); btn.disabled = true; }
+    else { btn = el('button', 'btn', 'Override: send to agents'); btn.addEventListener('click', () => toast('Override logged. SME will see this item.')); }
+    d.appendChild(btn);
+  }
+  $$('[data-filter]').forEach(c => c.addEventListener('click', () => {
+    $$('[data-filter]').forEach(x => x.classList.remove('active')); c.classList.add('active'); filter = c.dataset.filter; renderItems();
+  }));
+  renderItems(); renderDetail();
+
+  /* ── 2 · Draft & verify: the agent pipeline ── */
+  const icon = {
+    watch: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    research: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+    author: '<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+    test: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/>',
+    critic: '<path d="M12 3l9 16H3L12 3z"/><path d="M12 10v4M12 17v.5"/>',
+    sme: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>'
+  };
+  const agents = [
+    { id: 'watch', name: 'Watcher', kind: 'LLM · small model', tag: 'b-teal', status: 'ran',
+      summary: 'Detected CIS v7.0.0 3.1.4; no existing CloudGuard rule found',
+      html: '<p>Matched the new CIS v7.0.0 recommendation <b>3.1.4</b> against the rule library: no existing rule covers it. Ranked by customer footprint <span class="ph">[from scan telemetry]</span>.</p><div class="quote"><b>Why it matters:</b> filters out about 9 in 10 announcements so SMEs never see the noise (89 of 100 in the triage set).</div>' },
+    { id: 'research', name: 'Research', kind: 'LLM · cited extraction', tag: 'b-teal', status: 'ran',
+      summary: 'Requirement extracted with 2 verified citations',
+      html: '<p><b>Sources retrieved</b></p><ul style="margin:6px 0 0 20px"><li>CIS AWS Foundations Benchmark v7.0.0 · 3.1.4 · Section 3 Storage · Level 1 · Automated</li><li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html" target="_blank" rel="noopener">AWS S3 User Guide: Blocking public access</a></li></ul><div class="quote"><b>Extracted requirement (cited):</b> buckets pass when ignore_public_acls and restrict_public_buckets are enabled at the bucket or account scope. Account-wide protection counts as effective for the bucket.</div><span class="badge b-green">✓ Citation spans verified against source</span>' },
+    { id: 'author', name: 'Author', kind: 'LLM · structured rule', tag: 'b-teal', status: 'ran',
+      summary: 'Rule drafted in house format; schema-valid',
+      html: '<pre class="code"><span class="k">rule:</span> s3_bucket_block_public_access\n<span class="k">resource:</span> AwsS3Bucket\n<span class="k">severity:</span> high\n<span class="k">benchmark:</span> CIS AWS v7.0.0 3.1.4\n<span class="k">pass_if:</span>\n  (bucket.pab.ignore_public_acls AND bucket.pab.restrict_public_buckets)\n  OR\n  (account.pab.ignore_public_acls AND account.pab.restrict_public_buckets)\n<span class="k">fail_message:</span> "Block Public Access is not configured for the S3 Bucket {bucket.name}."\n<span class="k">remediation_cli:</span> aws s3api put-public-access-block --bucket &lt;BUCKET_NAME&gt; \\\n  --public-access-block-configuration IgnorePublicAcls=true,RestrictPublicBuckets=true</pre><p class="note" style="margin-top:8px">Few-shot examples: existing SME-written rules. Logic matches reference check s3_bucket_level_public_access_block.</p>' },
+    { id: 'test', name: 'Test harness', kind: 'Deterministic · sandbox', tag: 'b-green', status: 'ran',
+      summary: '4 of 4 Terraform fixtures behaved as expected (example run)',
+      html: '<p>Terraform fixtures deployed to a sandbox AWS account, rule executed, resources torn down. <b>The LLM never grades its own rule.</b></p><table style="margin-top:10px"><thead><tr><th>Fixture</th><th>Expected</th><th>Actual</th></tr></thead><tbody><tr><td>Bucket with IgnorePublicAcls + RestrictPublicBuckets on</td><td>PASS</td><td class="ok">PASS ✓</td></tr><tr><td>Bucket without settings, account-level off</td><td>FAIL</td><td class="ok">FAIL ✓</td></tr><tr><td>Bucket without settings, account-level on</td><td>PASS</td><td class="ok">PASS ✓</td></tr><tr><td>Bucket with only IgnorePublicAcls on</td><td>FAIL</td><td class="ok">FAIL ✓</td></tr></tbody></table><p class="note" style="margin-top:8px">Example run shown. Shadow mode: would fire on <span class="ph">[N]</span> of <span class="ph">[M]</span> buckets.</p>' },
+    { id: 'critic', name: 'Critic', kind: 'LLM · edge cases', tag: 'b-teal', status: 'flag',
+      summary: 'Flagged account-level override (edge case E-050); resolved in draft',
+      html: '<div class="flagbox"><strong>Flag raised on first draft.</strong> The draft checked bucket-level settings only, so buckets already protected by the account-level setting would have been reported: <b>false positives</b>.</div><p style="margin-top:12px">Draft revised and the tests ran again. This is edge case <b>E-050</b> in the golden dataset. Overlap check against existing rules: <span class="ph">[none / rule IDs]</span>.</p>' },
+    { id: 'sme', name: 'SME decision', kind: 'Human · owns sign-off', tag: 'b-ink', status: 'wait',
+      summary: 'Awaiting SME decision', html: null }
+  ];
+  let sel = 5;
+  function renderRail() {
+    const rail = $('#rail'); rail.textContent = '';
+    agents.forEach((a, i) => {
+      const b = el('button', 'agent ' + (a.status === 'ran' ? 'ran' : a.status === 'flag' ? 'flag ran' : '') + (a.running ? ' running' : '') + (i === sel ? ' selected' : ''));
+      b.setAttribute('aria-label', a.name + ' agent');
+      const n = el('span', 'node');
+      n.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icon[a.id] + '</svg>';
+      b.appendChild(n); b.appendChild(el('span', 'name', a.name)); b.appendChild(el('span', 'kind badge ' + a.tag, a.kind));
+      b.addEventListener('click', () => { sel = i; renderRail(); renderPanel(); });
+      rail.appendChild(b);
+    });
+  }
+  function renderSummary() {
+    const ul = $('#summary'); ul.textContent = '';
+    agents.forEach(a => {
+      const li = el('li');
+      li.appendChild(el('span', 'tick' + (a.status === 'flag' ? ' warn' : ''), a.status === 'wait' ? '…' : a.status === 'flag' ? '!' : '✓'));
+      const t = el('span'); t.appendChild(el('b', null, a.name + ': ')); t.appendChild(document.createTextNode(a.summary)); li.appendChild(t);
+      ul.appendChild(li);
+    });
+  }
+  function renderPanel() {
+    const a = agents[sel], p = $('#agent-panel'); p.textContent = '';
+    const head = el('div', 'panel-head'); head.appendChild(el('h2', null, (sel + 1) + ' · ' + a.name)); head.appendChild(el('span', 'badge ' + a.tag, a.kind)); p.appendChild(head);
+    if (a.id !== 'sme') { const body = el('div'); body.innerHTML = a.html; p.appendChild(body); return; }
+    p.appendChild(el('p', null, 'Review the evidence pack on the right, then decide. Tier T2 needs one SME; T3 rules (critical, or high in IAM/network) need two.'));
+    const row = el('div', 'decision-row');
+    const ap = el('button', 'btn primary', 'Approve → shadow mode'), ed = el('button', 'btn', 'Edit rule'), rj = el('button', 'btn danger', 'Reject');
+    row.append(ap, ed, rj); p.appendChild(row);
+    const fs = el('fieldset'); fs.style.display = 'none';
+    fs.appendChild(el('legend', null, 'Reason code (required, used to improve the agents)'));
+    ['Wrong logic', 'Wrong severity', 'Citation does not support claim', 'Duplicate of existing rule', 'Not automatable'].forEach(r => {
+      const l = el('label', 'radio'); const inp = el('input'); inp.type = 'radio'; inp.name = 'reason'; inp.value = r; l.append(inp, document.createTextNode(r)); fs.appendChild(l);
+    });
+    const confirmRj = el('button', 'btn danger', 'Confirm rejection'); confirmRj.style.marginTop = '8px'; fs.appendChild(confirmRj);
+    p.appendChild(fs);
+    const lab = el('label', null, 'Reviewer note (optional)'); lab.style.cssText = 'display:block;margin-top:14px;font-weight:600;font-size:13px'; lab.htmlFor = 'note';
+    const ta = el('textarea'); ta.id = 'note'; ta.rows = 2; p.append(lab, ta);
+    const res = el('div', 'result'); p.appendChild(res);
+    p.appendChild(el('p', 'note', 'Every decision is written to an immutable audit trail: who, when, model and prompt version.')).style.marginTop = '10px';
+    ap.addEventListener('click', () => {
+      a.status = 'ran'; a.summary = 'Approved by [SME name]'; renderRail(); renderSummary();
+      res.className = 'result good show'; res.textContent = 'Approved. Rollout: shadow mode → canary tenants → GA, behind a kill-switch flag. Next: see what the customer sees.';
+      $('#release-state').textContent = 'Approved · in shadow mode'; toast('Rule approved → shadow mode');
+    });
+    ed.addEventListener('click', () => { res.className = 'result good show'; res.textContent = 'Editor opens with the rule. Your diff is saved as feedback, and the test harness runs again before approval.'; });
+    rj.addEventListener('click', () => { fs.style.display = 'block'; res.className = 'result'; });
+    confirmRj.addEventListener('click', () => {
+      const r = $('input[name="reason"]:checked', fs);
+      if (!r) { toast('Pick a reason code first'); return; }
+      a.status = 'flag'; a.summary = 'Rejected: ' + r.value; renderRail(); renderSummary();
+      res.className = 'result bad show'; res.textContent = 'Rejected (' + r.value + '). The draft returns to the Author agent with this reason.';
+    });
+  }
+  let playing = false;
+  function replay() {
+    if (playing) return; playing = true;
+    const final = agents.map(a => a.status);
+    agents.forEach(a => { a.status = 'wait'; a.running = false; });
+    renderRail();
+    let i = 0;
+    (function stepFn() {
+      if (i > 0) { agents[i - 1].running = false; agents[i - 1].status = final[i - 1]; }
+      if (i === agents.length) { playing = false; sel = 5; renderRail(); renderPanel(); renderSummary(); return; }
+      agents[i].running = true; sel = i; renderRail(); renderPanel();
+      i++; setTimeout(stepFn, 650);
+    })();
+  }
+  $('#play').addEventListener('click', replay);
+  renderRail(); renderPanel(); renderSummary();
+
+  /* ── 3 · Publish ── */
+  const fixes = {
+    cli: 'aws s3api put-public-access-block --bucket <BUCKET_NAME> \\\n  --public-access-block-configuration \\\n  IgnorePublicAcls=true,RestrictPublicBuckets=true',
+    tf: 'resource "aws_s3_bucket_public_access_block" "<example_resource_name>" {\n  bucket                  = "<example_resource_id>"\n  ignore_public_acls      = true\n  restrict_public_buckets = true\n}'
+  };
+  $$('[data-fix]').forEach(c => c.addEventListener('click', () => {
+    $$('[data-fix]').forEach(x => x.classList.remove('active')); c.classList.add('active'); $('#fix-code').textContent = fixes[c.dataset.fix];
+  }));
+  $('#fix-code').textContent = fixes.cli;
+  $('#report-fp').addEventListener('click', () => { $('#fp-result').classList.add('show'); toast('False-positive report sent to SME queue'); });
+
+  /* ── 4 · Monitor ── */
+  const health = [['Watcher', 'LLM · small'], ['Research', 'LLM · mid'], ['Author', 'LLM · mid'], ['Test harness', 'Deterministic'], ['Critic', 'LLM · mid; large on T3'], ['SME queue', 'Human · backlog age']];
+  health.forEach(([n, k]) => { const tr = el('tr'); tr.append(el('td', null, n), el('td', null, k), el('td', 'ph', '[live]')); $('#health').appendChild(tr); });
+  const kill = $('#kill');
+  kill.addEventListener('click', () => {
+    const on = kill.classList.toggle('on'); kill.classList.toggle('off', !on);
+    kill.setAttribute('aria-pressed', String(on));
+    kill.textContent = on ? 'ON · click to kill' : 'OFF · SME rules only';
+    toast(on ? 'AI-drafted rules re-enabled' : 'Kill switch: AI-drafted rules withdrawn');
+  });
+})();
+</script>
+</body>
+</html>
